@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using MauiAppTempoAgoraSQLite.Models;
 using MauiAppTempoAgoraSQLite.Services;
 
@@ -6,11 +7,27 @@ namespace MauiAppTempoAgoraSQLite
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
 
+        ObservableCollection<Tempo> lista = new ObservableCollection<Tempo>();
         public MainPage()
         {
             InitializeComponent();
+            lst_produtos.ItemsSource = lista;
+        }
+        protected async override void OnAppearing()
+        {
+            try
+            {
+                lista.Clear();
+
+                List<Tempo> tmp = await App.Db.GetAll();
+
+                tmp.ForEach(i => lista.Add(i));
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Ops", ex.Message, "OK");
+            }
         }
 
         private async void Search_Clicked(object sender, EventArgs e)
@@ -41,7 +58,7 @@ namespace MauiAppTempoAgoraSQLite
 
                         wv_mapa.Source = mapa;
 
-                        Debug.WriteLine(mapa);
+                        await App.Db.Insert(t);
 
                     }
                     else
@@ -127,6 +144,21 @@ namespace MauiAppTempoAgoraSQLite
                 await DisplayAlert("Erro: Obtenção do nome da Cidade", ex.Message, "OK");
             }
         }
+
+        private void lst_produtos_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            try
+            {
+                Tempo t = e.SelectedItem as Tempo;
+
+              
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Ops", ex.Message, "OK");
+            }
+        }
     }
+
 
 }

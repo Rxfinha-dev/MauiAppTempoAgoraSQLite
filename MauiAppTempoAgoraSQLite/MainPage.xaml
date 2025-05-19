@@ -7,16 +7,50 @@
         <VerticalStackLayout
               Padding="30,0"
               Spacing="25">            
-
+            
+              
             <Button Text="Minha Localização" Clicked="Button_Clicked"/>
             <Label x:Name="lbl_coords"/>
-
+            
             <Entry x:Name="txt_cidade"/>
             <Button x:Name="Search" Text="Buscar Previsão" Clicked="Search_Clicked"/>
 
             <Label x:Name="lbl_res"/>
 
             <WebView x:Name="wv_mapa" HeightRequest="500"/>
+
+            <ListView x:Name="lst_produtos" ItemSelected="lst_produtos_ItemSelected">
+                <!-- Cabeçalho da lista -->
+                <ListView.Header>
+                    <Grid ColumnDefinitions="*, *, *, *, *">
+                        <!-- Layout em colunas -->
+                        <Label Grid.Column="0" Text="ID" />
+                        <Label Grid.Column="1" Text="Descrição" />
+                        <Label Grid.Column="2" Text="Preço" />
+                        <Label Grid.Column="3" Text="Qnt" />
+                        <Label Grid.Column="4" Text="Total" />
+                    </Grid>
+                </ListView.Header>
+                    <ListView.ItemTemplate>
+        <DataTemplate>
+            <ViewCell>
+                <!-- Menu de contexto para ações nos itens -->
+                <ViewCell.ContextActions>
+                    <MenuItem Text="Remover" Clicked="MenuItem_Clicked" />
+                </ViewCell.ContextActions>
+
+                <!-- Exibição dos dados do produto em colunas -->
+                <Grid ColumnDefinitions="*, *, *, *, *">
+                    <Label Grid.Column="0" Text="{Binding Id}" />
+                    <Label Grid.Column="1" Text="{Binding Descricao}" />
+                    <Label Grid.Column="2" Text="{Binding Preco}" />
+                    <Label Grid.Column="3" Text="{Binding Quantidade}" />
+                    <Label Grid.Column="4" Text="{Binding Total}" />
+                </Grid>
+            </ViewCell>
+        </DataTemplate>
+    </ListView.ItemTemplate>
+</ListView>
         </VerticalStackLayout>
     </ScrollView>
 
